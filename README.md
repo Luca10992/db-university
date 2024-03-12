@@ -32,10 +32,9 @@ WHERE `cfu` > '10';
 ### 3- Selezionare tutti gli studenti che hanno più di 30 anni
 
 ```sql
-SELECT * FROM `students`
-WHERE `date_of_birth`
-BETWEEN '1994-01-01' AND '1994-03-11'
-ORDER BY `date_of_birth`;
+SELECT *
+FROM `students`
+WHERE TIMESTAMPDIFF(YEAR, `date_of_birth`, CURDATE()) > 30;
 ```
 
 ### 4- Selezionare tutti i corsi del primo semestre del primo anno di un qualsiasi corso di laurea
@@ -64,12 +63,15 @@ WHERE `level` = 'magistrale';
 ### 7- Da quanti dipartimenti è composta l'università?
 
 ```sql
-SELECT * FROM `departments`
+SELECT COUNT(id)
+AS number_of_departments
+FROM `departments`;
 ```
 
 ### 8- Quanti sono gli insegnanti che non hanno un numero di telefono?
 
 ```sql
-SELECT * FROM `teachers`
+SELECT COUNT(*)
+FROM `teachers`
 WHERE `phone` IS NULL;
 ```
