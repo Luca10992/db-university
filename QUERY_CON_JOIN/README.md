@@ -37,11 +37,12 @@ SELECT
     `teachers`.`surname` as `teachers_surname`
 FROM `degrees`
 INNER JOIN `courses`
-ON `courses`.`id` = `degree_id`
+ON `degrees`.`id` = `courses`.`degree_id`
+INNER JOIN `course_teacher`
+ON `courses`.`id` = `course_teacher`.`course_id`
 INNER JOIN `teachers`
-ON `teachers`.`id`
-WHERE `degrees`.`level` = 'magistrale'
-AND `teachers`.`name` = 'Fulvio'
+ON `teachers`.`id` = `course_teacher`.`teacher_id`
+WHERE `teachers`.`name` = 'Fulvio'
 AND `teachers`.`surname` = 'Amato';
 ```
 
@@ -127,7 +128,9 @@ INNER JOIN `exam_student`
 ON `students`.`id` = `exam_student`.`student_id`
 INNER JOIN `exams`
 ON `exams`.`id` = `exam_student`.`exam_id`
-GROUP BY `students`.`id`;
+INNER JOIN `courses`
+ON `exams`.`course_id` = `courses`.`id`
+GROUP BY `students`.`id`, `courses`.`id`;
 ```
 
 <!-- VOTO PIù BASSO -->
@@ -144,5 +147,6 @@ INNER JOIN `exam_student`
 ON `students`.`id` = `exam_student`.`student_id`
 INNER JOIN `exams`
 ON `exams`.`id` = `exam_student`.`exam_id`
-GROUP BY `students`.`id`;
+GROUP BY `students`.`id`
+HAVING `vote` >= 18;
 ```
